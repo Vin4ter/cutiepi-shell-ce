@@ -1,0 +1,64 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>apps/term.qml</file>
+        <file>apps/terminal.sh</file>
+        <file>apps/web.qml</file>
+        <file>apps/webview.sh</file>
+        <file>icons/audio-volume-high-symbolic.svg</file>
+        <file>icons/audio-volume-low-symbolic.svg</file>
+        <file>icons/audio-volume-medium-symbolic.svg</file>
+        <file>icons/audio-volume-muted-symbolic.svg</file>
+        <file>icons/battery-caution-charging-symbolic.svg</file>
+        <file>icons/battery-caution-symbolic.svg</file>
+        <file>icons/battery-empty-charging-symbolic.svg</file>
+        <file>icons/battery-empty-symbolic.svg</file>
+        <file>icons/battery-full-charged-symbolic.svg</file>
+        <file>icons/battery-full-charging-symbolic.svg</file>
+        <file>icons/battery-full-symbolic.svg</file>
+        <file>icons/battery-good-charging-symbolic.svg</file>
+        <file>icons/battery-good-symbolic.svg</file>
+        <file>icons/battery-low-charging-symbolic.svg</file>
+        <file>icons/battery-low-symbolic.svg</file>
+        <file>icons/battery-missing-symbolic.svg</file>
+        <file>icons/favicon.png</file>
+        <file>icons/network-wireless-acquiring-symbolic.svg</file>
+        <file>icons/network-wireless-connected-symbolic.svg</file>
+        <file>icons/network-wireless-encrypted-symbolic.svg</file>
+        <file>icons/network-wireless-signal-excellent-symbolic.svg</file>
+        <file>icons/network-wireless-signal-good-symbolic.svg</file>
+        <file>icons/network-wireless-signal-none-symbolic.svg</file>
+        <file>icons/network-wireless-signal-ok-symbolic.svg</file>
+        <file>icons/network-wireless-signal-weak-symbolic.svg</file>
+        <file>icons/terminal-512.png</file>
+        <file>layouts/en_US/CtrlKey.qml</file>
+        <file>layouts/en_US/dialpad.qml</file>
+        <file>layouts/en_US/digits.qml</file>
+        <file>layouts/en_US/EscKey.qml</file>
+        <file>layouts/en_US/handwriting.qml</file>
+        <file>layouts/en_US/main.qml</file>
+        <file>layouts/en_US/numbers.qml</file>
+        <file>layouts/en_US/symbols.qml</file>
+        <file>layouts/en_US/TabKey.qml</file>
+        <file>layouts/en_US/WSpaceKey.qml</file>
+        <file>compositor.qml</file>
+        <file>cutiepi-shell-ce.pro</file>
+        <file>Font Awesome 5 Free-Solid-900.otf</file>
+        <file>Keyboard.qml</file>
+        <file>kms.conf</file>
+        <file>LockScreen.qml</file>
+        <file>main.cpp</file>
+        <file>qml.qrc</file>
+        <file>Screen.qml</file>
+        <file>SettingSheet.qml</file>
+        <file>SideBar.qml</file>
+        <file>start.sh</file>
+        <file>StatusArea.qml</file>
+        <file>SuggestionContainer.qml</file>
+        <file>tabControl.js</file>
+        <file>WaylandChrome.qml</file>
+        <file>WebView.qml</file>
+        <file>XWaylandChrome.qml</file>
+
+    </qresource>
+</RCC>
