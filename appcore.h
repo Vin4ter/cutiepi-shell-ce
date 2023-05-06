@@ -17,6 +17,7 @@ public:
 signals:
     void sendString(QString current_line);
 
+
 public slots:
     void receiveFromQml();
     void receiveOpenKonsole();

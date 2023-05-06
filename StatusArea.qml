@@ -2,6 +2,8 @@ import QtQuick 2.14
 
 Rectangle {
     property alias audio: audio 
+    property int wasignal
+    property string wastatus
     color: "#2E3440"
     width: 360 + 20 
     height: 65
@@ -12,6 +14,26 @@ Rectangle {
     }
     radius: 22
     z: 4 
+
+    Connections {
+         target: wifiManager
+        onUpdateConnectedWifi:{
+        wastatus = lstatus
+        wasignal = lsignal
+            console.log("wasignal>> "+wasignal)
+             console.log("wastatus>> "+wastatus)
+
+            if (wastatus == "noconnected") { wifiIndicator.source="qrc:/icons/network-wireless-signal-none-symbolic.svg" } // no wifi connection
+                            else if (wastatus=="connected" && wasignal >= 80 ) { wifiIndicator.source="qrc:/icons/network-wireless-signal-excellent-symbolic.svg" }
+                            else if (wastatus=="connected" && wasignal >= 70 ) {  wifiIndicator.source="qrc:/icons/network-wireless-signal-good-symbolic.svg" }
+                            else if (wastatus=="connected"  && wasignal  >= 55 ) {  wifiIndicator.source="qrc:/icons/network-wireless-signal-ok-symbolic.svg" }
+                            else if (wastatus=="connected"  && wasignal  >= 0 ) {  wifiIndicator.source="qrc:/icons/network-wireless-signal-weak-symbolic.svg" }
+
+
+
+        }
+     }
+
 
     Row { 
         id: statusAreaBar 
@@ -51,21 +73,15 @@ Rectangle {
             width: 34; height: width; sourceSize.width: width*2; sourceSize.height: height*2;
         }
 
-        // wifi
-        /*
+
         Image {
             id: wifiIndicator
-            source: if (networkManager.state == "idle") { "icons/network-wireless-signal-none-symbolic.svg" } // no wifi connection
-                else if (networkManager.connected && networkManager.connectedWifi.strength >= 55 ) { "icons/network-wireless-signal-excellent-symbolic.svg" } 
-                else if (networkManager.connected && networkManager.connectedWifi.strength >= 50 ) { "icons/network-wireless-signal-good-symbolic.svg" } 
-                else if (networkManager.connected && networkManager.connectedWifi.strength >= 45 ) { "icons/network-wireless-signal-ok-symbolic.svg" } 
-                else if (networkManager.connected && networkManager.connectedWifi.strength >= 30 ) { "icons/network-wireless-signal-weak-symbolic.svg" } 
-                else { "icons/network-wireless-connected-symbolic.svg" } 
+
             width: 34; height: width; sourceSize.width: width*2; sourceSize.height: height*2; 
-        }*/
+        }
 
         Text {
-            font.pointSize: 11
+            font.pointSize: 15
             text: Qt.formatDateTime(new Date(), formatDateTimeString)
             color: "#ECEFF4"
             anchors.leftMargin: 5

@@ -8,7 +8,9 @@ CONFIG += c++11
 
 SOURCES += \
     appcore.cpp \
-main.cpp
+main.cpp \
+    soundcontroller.cpp \
+    wifimanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -24,5 +26,20 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    appcore.h
+    appcore.h \
+    soundcontroller.h \
+    wifimanager.h
+
+DISTFILES += \
+    layouts/en_US/CtrlKey.qml \
+    layouts/en_US/EscKey.qml \
+    layouts/en_US/TabKey.qml \
+    layouts/en_US/WSpaceKey.qml \
+    layouts/en_US/dialpad.qml \
+    layouts/en_US/digits.qml \
+    layouts/en_US/handwriting.qml \
+    layouts/en_US/main.qml \
+    layouts/en_US/numbers.qml \
+    layouts/en_US/symbols.qml \
+    scripts/konsole.sh
 

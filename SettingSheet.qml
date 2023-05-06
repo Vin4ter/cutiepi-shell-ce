@@ -11,6 +11,29 @@ Rectangle {
     radius: 22
     z: 3 
 
+    Connections {
+         target: wifiManager
+
+         onPutWifi: {
+           //  console.log(ssid+" "+wsignal);
+          wifiListModel.append( {"wifiSsid" : ssid, "strength" : wsignal, "rsec" : wsec, "findex" : lindex, "cstatus": lstatus } )
+            // playlistModel.append( { "path" : current_line, } )
+         }
+         onClearWifiList:{
+              wifiListModel.clear()
+         }
+         onConnectedWifi:{
+             console.log(status) //ok  error
+             if(status=="ok"){
+                 conected_wifi_ssid=select_ssid
+                 select_ssid=""
+             }
+         }
+     }
+    Connections {
+         target: audioManager
+     }
+
     // volume bar
     Rectangle{
         id: volumeBar
@@ -76,8 +99,10 @@ Rectangle {
             onXChanged: {
                 var fullrange = volumeBarTrack.width - volumeBarThumb.width
                 var vol = 100*(volumeBarThumb.x - volumeBarTrack.x)/fullrange
+                audioManager.setAudioVolume(vol)
                 if(vol <= 2)
                     setting.audio.source = "icons/audio-volume-muted-symbolic.svg"
+
                 else if(vol < 25)
                     setting.audio.source = "icons/audio-volume-low-symbolic.svg"
                 else if(vol < 75)
@@ -175,11 +200,14 @@ Rectangle {
         height: 1
         color: "#ECEFF4"
     }
+    ListModel {
+           id: wifiListModel
+       }
 
     // wifi scan result 
     ListView {
         id: wifiListView
-        visible: root.state == "setting" 
+        visible: root.state == "setting"
         clip: true
         anchors {
             bottomMargin: 15
@@ -189,12 +217,16 @@ Rectangle {
             right: parent.right
             bottom: parent.bottom
         }
-        /*
-        model: networkingModel
+
+        model: wifiListModel
         delegate: Rectangle {
             height: 45
             width: parent.width 
             color: 'transparent' 
+            Text {
+                text: findex
+                visible: false
+            }
             Row {
                 width: parent.width - 40 
                 height: parent.height
@@ -208,14 +240,15 @@ Rectangle {
                     Text {
                         font.family: icon.name 
                         font.pixelSize: 12
-                        text: (modelData.state == "online" || modelData.state == "ready") ? "\uf00c" : ""
+                        text: cstatus
                         color: "#ECEFF4"
-                        anchors.right: parent.right
+                        anchors.left: parent.left
+                        anchors.leftMargin: 210
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
                 Text {
-                    text: (modelData.name == "") ? "[Hidden Wifi]" : modelData.name
+                    text: wifiSsid
                     color: "#ECEFF4"
                     elide: Text.ElideRight
                     width: 230
@@ -239,28 +272,30 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                     Image { 
                         width: 20; height: width; sourceSize.width: width*2; sourceSize.height: height*2;
-                        source: (modelData.security[0] == "none") ? "" : "icons/network-wireless-encrypted-symbolic.svg"
+                        source: if(rsec=="security"){return "qrc:/icons/network-wireless-encrypted-symbolic.svg"} else {return ""}
                     }
                 }
                 Image {
                     width: 20; height: width; sourceSize.width: width*2; sourceSize.height: height*2;
-                    source: if (modelData.strength >= 55 ) { return "icons/network-wireless-signal-excellent-symbolic.svg" }
-                    else if (modelData.strength >= 50 ) { return "icons/network-wireless-signal-good-symbolic.svg" }
-                    else if (modelData.strength >= 45 ) { return "icons/network-wireless-signal-ok-symbolic.svg" }
-                    else if (modelData.strength >= 30 ) { return "icons/network-wireless-signal-weak-symbolic.svg" }
+                    source: if (strength >= 80 ) { return "qrc:/icons/network-wireless-signal-excellent-symbolic.svg" }
+                    else if (strength >= 70 ) { return "qrc:/icons/network-wireless-signal-good-symbolic.svg" }
+                    else if (strength >= 55 ) { return "qrc:/icons/network-wireless-signal-ok-symbolic.svg" }
+                    else if (strength >= 0 ) { return "qrc:/icons/network-wireless-signal-weak-symbolic.svg" }
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }
             MouseArea {
                 anchors.fill: parent
-                onClicked: {
-                    if (modelData.state == "idle" || modelData.state == "failure") {
-                        networkingModel.networkName = modelData.name 
-                        modelData.requestConnect()
+                onClicked:  {
+                selectWindex = findex
+                select_ssid = wifiSsid
+                root.state="wifiConnect"
+ //    console.log("windex: "+selectWindex)
+
                     }
                 }
             }
         }
-        */
+
     }
-}
+

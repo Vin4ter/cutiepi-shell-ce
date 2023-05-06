@@ -2,10 +2,9 @@ import QtQuick 2.14
 import QtQuick.Window 2.2
 import QtWayland.Compositor 1.14
 //import Liri.XWayland 1.0 as LXW
-
 import QtQuick.Controls 2.1
 import QtSensors 5.11
-//import MeeGo.Connman 0.2 
+
 
 WaylandOutput {
     id: compositor
@@ -24,8 +23,11 @@ WaylandOutput {
 
     property int drawerWidth: 360 
     property int drawerMargin: 10
-    property int drawerHeight: 40 
+    property int drawerHeight: 40
 
+     property string conected_wifi_ssid
+    property  string select_ssid
+    property  int selectWindex: 0
     function handleShellSurface(shellSurface) {
         shellSurfaces.insert(0, {shellSurface: shellSurface});
     }
@@ -48,6 +50,12 @@ WaylandOutput {
           }
       }
 
+    Component.onCompleted: {
+   wifiManager.getWifiList();
+   wifiManager.chk();
+    }
+
+
     onOrientationChanged: {
         var i = sidebar.tabListView.currentIndex;
         var surface = shellSurfaces.get(i).shellSurface;
@@ -65,17 +73,24 @@ WaylandOutput {
             State {
                 name: "setting"
                 PropertyChanges { target: settingSheet; y: 0 } 
+                    PropertyChanges { target: wifiConnect; visible: false }
+            },
+            State {
+                name: "wifiConnect"
+                PropertyChanges { target: wifiConnect; visible: true }
             },
             State { name: "locked" }, 
             State { name: "popup" }, 
             State{
                 name: "drawer"
                 PropertyChanges { target: content; anchors.leftMargin: drawerWidth }
+                  PropertyChanges { target: wifiConnect; visible: false }
             },
             State {
                 name: "normal"
                 PropertyChanges { target: content; anchors.leftMargin: 0 }
                 PropertyChanges { target: settingSheet; y: -600 + 65 }
+                          PropertyChanges { target: wifiConnect; visible: false }
             }
         ]
 
@@ -264,7 +279,7 @@ WaylandOutput {
 
                 SettingSheet { id: settingSheet } 
                 StatusArea { id: setting }
-
+                WifiConnect { id: wifiConnect }
                 Repeater {
                     anchors { top: naviBar.bottom; left: parent.left; bottom: parent.bottom; right: parent.right }
                     model: shellSurfaces

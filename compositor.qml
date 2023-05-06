@@ -26,7 +26,7 @@ WaylandCompositor {
             screen.handleShellSurface(shellSurface)
         }
     }
-/*
+/* liri
     Component.onCompleted: xwayland.startServer();
 
     LXW.XWayland {

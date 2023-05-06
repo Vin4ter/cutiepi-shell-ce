@@ -59,6 +59,6 @@
         <file>WaylandChrome.qml</file>
         <file>WebView.qml</file>
         <file>XWaylandChrome.qml</file>
-
+        <file>WifiConnect.qml</file>
     </qresource>
 </RCC>

@@ -14,5 +14,6 @@ void AppCore::receiveFromQml()
 
 }
 void AppCore::receiveOpenKonsole(){
-    QProcess().startDetached("konsole");
+
+      QProcess().startDetached("/bin/sh", QStringList() << "scripts/konsole.sh");
 }
