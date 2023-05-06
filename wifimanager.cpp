@@ -207,7 +207,7 @@ void wifiManager::connectWifi(QString ssid, QString password)
 {
         QProcess * wproc = new QProcess(this);
     qputenv("LC_ALL", "C.UTF-8");
-    wproc->start("/bin/sh", QStringList()<< "-c" << "nmcli device wifi connect "+ssid+" password "+password);
+    wproc->start("/bin/sh", QStringList()<< "-c" << "echo 1234 | sudo -S nmcli device wifi connect \""+ssid+"\" password "+password+" name \""+ssid+"\"");
     QString buffer="";
     wproc->waitForFinished(); // sets current thread to sleep and waits for pingProcess end
     //QString output(pingProcess.readAllStandardOutput());

@@ -10,12 +10,12 @@
 #include "soundcontroller.h"
 int main(int argc, char *argv[])
 {
-    qputenv("QT_QPA_PLATFORM", "xcb");
+    qputenv("QT_QPA_PLATFORM", "eglfs");
     qputenv("LD_LIBRARY_PATH", "/usr/local/lib:$LD_LIBRARY_PATH");
      qputenv("QT_IM_MODULE", "qtvirtualkeyboard");
      qputenv("QT_VIRTUALKEYBOARD_LAYOUT_PATH", "qrc:/layouts/");
       qputenv("QT_QAYLAND_CLIENT_BUFFER_INTEGRATION", "wayland-egl");
-      //  qputenv("XDG_RUNTIME_DIR", "XDG_RUNTIME_DIR=$HOME/.xdg");
+       qputenv("XDG_RUNTIME_DIR", "XDG_RUNTIME_DIR=$HOME/.xdg");
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif

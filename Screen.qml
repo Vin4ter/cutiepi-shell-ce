@@ -28,6 +28,7 @@ WaylandOutput {
      property string conected_wifi_ssid
     property  string select_ssid
     property  int selectWindex: 0
+
     function handleShellSurface(shellSurface) {
         shellSurfaces.insert(0, {shellSurface: shellSurface});
     }
@@ -285,8 +286,7 @@ WaylandOutput {
                     model: shellSurfaces
                     delegate: Component {
                         Loader {
-                            source: ( modelData.toString().match(/XWaylandShellSurface/) ) ? 
-                                "XWaylandChrome.qml" : "WaylandChrome.qml" 
+                            source: "WaylandChrome.qml"
                         }
                     }
                 }
