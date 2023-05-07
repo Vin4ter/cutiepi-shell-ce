@@ -1,7 +1,7 @@
 import QtQuick 2.14
 import QtQuick.Window 2.2
 import QtWayland.Compositor 1.14
-//import Liri.XWayland 1.0 as LXW
+import Liri.XWayland 1.0 as LXW
 import QtQuick.Controls 2.1
 import QtSensors 5.11
 
@@ -30,8 +30,8 @@ WaylandOutput {
     property  int selectWindex: 0
 
     function handleShellSurface(shellSurface) {
-        shellSurfaces.insert(0, {shellSurface: shellSurface});
-    }
+            shellSurfaces.insert(0, {shellSurface: shellSurface});
+        }
 
     onScreenLockedChanged: {
         if (screenLocked) {
@@ -282,15 +282,16 @@ WaylandOutput {
                 StatusArea { id: setting }
                 WifiConnect { id: wifiConnect }
                 Repeater {
-                    anchors { top: naviBar.bottom; left: parent.left; bottom: parent.bottom; right: parent.right }
-                    model: shellSurfaces
-                    delegate: Component {
-                        Loader {
-                            source: "WaylandChrome.qml"
-                        }
-                    }
-                }
-            }
+                           anchors { top: naviBar.bottom; left: parent.left; bottom: parent.bottom; right: parent.right }
+                           model: shellSurfaces
+                           delegate: Component {
+                               Loader {
+                                   source: ( modelData.toString().match(/XWaylandShellSurface/) ) ?
+                                       "XWaylandChrome.qml" : "WaylandChrome.qml"
+                               }
+                           }
+                       }
+                   }
 
             LockScreen { id: lockscreen }
 

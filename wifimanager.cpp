@@ -195,7 +195,7 @@ QString curLine="";
 
 void wifiManager::chk()
 {
-      QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)+"/main.conf", QSettings::IniFormat);
+    QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation)+"/main.conf", QSettings::IniFormat);
     timerUpdateList->start();
     settings.beginGroup( "NetworkManager" );
     settings.value( "wpasswd").toString();
@@ -205,13 +205,14 @@ void wifiManager::chk()
 
 void wifiManager::connectWifi(QString ssid, QString password)
 {
-        QProcess * wproc = new QProcess(this);
-    qputenv("LC_ALL", "C.UTF-8");
-    wproc->start("/bin/sh", QStringList()<< "-c" << "echo 1234 | sudo -S nmcli device wifi connect \""+ssid+"\" password "+password+" name \""+ssid+"\"");
+    QProcess * wproc = new QProcess(this);
+    qputenv("LC_ALL", "C");
+    wproc->start("/bin/sh", QStringList()<< "-c" << "echo aeroprof2013 | sudo -S nmcli device wifi connect \""+ssid+"\" password "+password+" name \""+ssid+"\"");
     QString buffer="";
     wproc->waitForFinished(); // sets current thread to sleep and waits for pingProcess end
     //QString output(pingProcess.readAllStandardOutput());
     buffer = wproc->readAll();
+qDebug()<<"connect proc: "<<buffer;
     wproc->close();
     delete wproc;
        QString lane ="";

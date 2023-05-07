@@ -8,5 +8,4 @@ export QT_WAYLAND_CLIENT_BUFFER_INTEGRATION=wayland-egl
 export XDG_RUNTIME_DIR=$HOME/.xdg
 unset QT_IM_MODULE
 
-konsole
- 
+falkon
