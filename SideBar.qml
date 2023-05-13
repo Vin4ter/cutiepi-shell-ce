@@ -10,6 +10,14 @@ Rectangle {
     anchors { left: parent.left; top: parent.top }
     color: "#2E3440"
 
+    property ShellSurface shellSurface
+    property int shellSurfaceIdx: -1
+
+    onShellSurfaceChanged: {
+           visibleClient.shellSurface = shellSurface;
+       }
+
+
     Component {
         id: tabDelegate
         Row {
@@ -24,7 +32,8 @@ Rectangle {
                     anchors { left: parent.left; margins: drawerMargin; verticalCenter: parent.verticalCenter} 
                 }
                 Text { 
-                    text: modelData.title 
+                   // id: ctext
+                     text: modelData.toplevel.title
                     color: "white"; 
                     font.pointSize: 7
                     anchors { left: parent.left; margins: drawerMargin; verticalCenter: parent.verticalCenter
@@ -49,6 +58,7 @@ Rectangle {
                         text: "\uF057"
                         font.family: icon.name
                         font.pointSize: 10
+
                         color: "gray"
 
                         MouseArea { 
@@ -66,11 +76,10 @@ Rectangle {
         anchors.fill: parent
 
         onCurrentIndexChanged: {
-            if (shellSurfaces.get(currentIndex).shellSurface.toString().match(/XWaylandShellSurface/)) { 
-                shellSurfaces.get(currentIndex).shellSurface.sendResize(Qt.size(view.width, view.height - 85));
-            } else { 
-                shellSurfaces.get(currentIndex).shellSurface.sendConfigure(Qt.size(view.width, view.height), WlShellSurface.NoneEdge);
-            }
+       shellSurfaces.get(currentIndex).shellSurface.sendConfigure(Qt.size(view.width, view.height));
+   //  shellSurfaces.get(currentIndex).shellSurface
+     //  shellSurfaces.setProperty(shellSurfaces.get(currentIndex),"ctext","Test")
+
         }
 
         header: Rectangle { 
@@ -84,7 +93,7 @@ Rectangle {
             Text { 
                 text: "<b>New Tab</b>"
                 color: "white"
-                font.pointSize: 10
+                font.pointSize: 11
                 anchors { top: parent.top; left: parent.left; margins: 20; leftMargin: 70; }
             }
             MouseArea { 

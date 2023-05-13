@@ -60,5 +60,6 @@
         <file>WebView.qml</file>
         <file>XWaylandChrome.qml</file>
         <file>WifiConnect.qml</file>
+        <file>HomeLauncher.qml</file>
     </qresource>
 </RCC>

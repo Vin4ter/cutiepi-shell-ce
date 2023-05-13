@@ -39,10 +39,12 @@ WebEngineView {
 
     MouseArea { 
         id: webViewOverlay
-        anchors.fill: parent 
-        enabled: contextMenu.visible 
-        z: 3 
+        anchors.fill: parent
+        enabled: contextMenu.visible
+        z: 3
         onClicked: { contextMenu.visible = false }
+
+
     }
 
     Rectangle { 

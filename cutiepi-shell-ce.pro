@@ -1,4 +1,4 @@
-QT += quick
+QT +=  quick dbus core network qml quick gui-private
 
 CONFIG += c++11
 
@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += \
     appcore.cpp \
+    applauncher.cpp \
 main.cpp \
     soundcontroller.cpp \
     wifimanager.cpp
@@ -27,6 +28,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     appcore.h \
+    applauncher.h \
     soundcontroller.h \
     wifimanager.h
 

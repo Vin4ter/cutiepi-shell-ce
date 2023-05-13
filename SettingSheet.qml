@@ -3,7 +3,7 @@ import QtQuick 2.14
 // setting sheet 
 Rectangle {
     id: settingSheet
-    width: setting.width - 20 
+    width:   setting.width - 20
     height: 600 
     color: "#2E3440"
     anchors { right: parent.right;  }
@@ -15,12 +15,15 @@ Rectangle {
          target: wifiManager
 
          onPutWifi: {
-           //  console.log(ssid+" "+wsignal);
-          wifiListModel.append( {"wifiSsid" : ssid, "strength" : wsignal, "rsec" : wsec, "findex" : lindex, "cstatus": lstatus } )
-            // playlistModel.append( { "path" : current_line, } )
+             console.log(ssid+" "+wsignal+" "+wsec+" "+lindex+ " "+lstatus);
+
+
+         wifiListModel.append( {"wifiSsid" : ssid, "strength" : wsignal, "rsec" : wsec, "findex" : lindex, "cstatus": lstatus } )
+           // playlistModel.append( { "path" : current_line, } )
+            //console.log(ssid);
          }
          onClearWifiList:{
-              wifiListModel.clear()
+          wifiListModel.clear()
          }
          onConnectedWifi:{
              console.log(status) //ok  error
@@ -33,6 +36,8 @@ Rectangle {
     Connections {
          target: audioManager
      }
+
+
 
     // volume bar
     Rectangle{
@@ -207,7 +212,7 @@ Rectangle {
     // wifi scan result 
     ListView {
         id: wifiListView
-        visible: root.state == "setting"
+        visible: true
         clip: true
         anchors {
             bottomMargin: 15
@@ -289,7 +294,8 @@ Rectangle {
                 onClicked:  {
                 selectWindex = findex
                 select_ssid = wifiSsid
-                root.state="wifiConnect"
+               wmSlate.state  = "opened"
+                    settingSlate.state="closed"
  //    console.log("windex: "+selectWindex)
 
                     }

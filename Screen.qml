@@ -1,7 +1,7 @@
 import QtQuick 2.14
 import QtQuick.Window 2.2
 import QtWayland.Compositor 1.14
-import Liri.XWayland 1.0 as LXW
+//import Liri.XWayland 1.0 as LXW
 import QtQuick.Controls 2.1
 import QtSensors 5.11
 
@@ -24,14 +24,15 @@ WaylandOutput {
     property int drawerWidth: 360 
     property int drawerMargin: 10
     property int drawerHeight: 40
-
+    property int shellScaleFactor: 1
      property string conected_wifi_ssid
     property  string select_ssid
     property  int selectWindex: 0
 
-    function handleShellSurface(shellSurface) {
-            shellSurfaces.insert(0, {shellSurface: shellSurface});
-        }
+    function handleShellSurface(shellSurface, toplevel) {
+        shellSurfaces.append({shellSurface: shellSurface});
+    }
+
 
     onScreenLockedChanged: {
         if (screenLocked) {
@@ -52,8 +53,8 @@ WaylandOutput {
       }
 
     Component.onCompleted: {
-   wifiManager.getWifiList();
-   wifiManager.chk();
+        wifiManager.getWifiList();
+       wifiManager.chk();
     }
 
 
@@ -69,40 +70,110 @@ WaylandOutput {
 
     Item {
         id: root
-        state: "normal" 
+        state: "normal"
         states: [
-            State {
-                name: "setting"
-                PropertyChanges { target: settingSheet; y: 0 } 
-                    PropertyChanges { target: wifiConnect; visible: false }
-            },
-            State {
-                name: "wifiConnect"
-                PropertyChanges { target: wifiConnect; visible: true }
-            },
-            State { name: "locked" }, 
-            State { name: "popup" }, 
+
+            State { name: "locked" },
+            State { name: "popup" },
             State{
                 name: "drawer"
                 PropertyChanges { target: content; anchors.leftMargin: drawerWidth }
-                  PropertyChanges { target: wifiConnect; visible: false }
+                PropertyChanges { target: homeLauncher; x: drawerWidth }
             },
             State {
                 name: "normal"
-                PropertyChanges { target: content; anchors.leftMargin: 0 }
-                PropertyChanges { target: settingSheet; y: -600 + 65 }
-                          PropertyChanges { target: wifiConnect; visible: false }
+                PropertyChanges { target: content; anchors.leftMargin:0 }
+
             }
         ]
 
         transitions: [
             Transition {
                 to: "*"
-                NumberAnimation { target: settingSheet; properties: "y"; duration: 400; easing.type: Easing.InOutQuad; }
+  NumberAnimation { target: homeLauncher; properties: "x"; duration: 400; easing.type: Easing.InOutQuad; }
                 NumberAnimation { target: content; properties: "anchors.leftMargin"; duration: 300; easing.type: Easing.InOutQuad; }
             }
         ]
     }
+
+
+
+
+    Item {
+         id: launcherState
+         state: "opened"
+         states: [
+             State {
+                 name: "opened"
+                 PropertyChanges { target: homeLauncher; y: 75}
+
+             },
+             State {
+                 name: "closed"
+                 PropertyChanges { target: homeLauncher; y: view.height-10}
+             }
+         ]
+
+         transitions: [
+            Transition {
+                 to: "*"
+                    NumberAnimation { target: homeLauncher; properties: "y"; duration: 400; easing.type: Easing.InOutQuad; }
+
+            }
+         ]
+     }
+
+
+
+    Item {
+         id: settingSlate
+         state: "closed"
+
+         states: [
+             State {
+                 name: "opened"
+             PropertyChanges { target: settingSheet; y: 0 }
+             },
+             State {
+                 name: "closed"
+             PropertyChanges { target: settingSheet; y: -600 + 65 }
+             }
+         ]
+         transitions: [
+            Transition {
+                 to: "*"
+            NumberAnimation { target: settingSheet; properties: "y"; duration: 400; easing.type: Easing.InOutQuad; }
+            }
+         ]
+     }
+
+    Item {
+         id: wmSlate
+         state: "closed"
+
+         states: [
+             State {
+                 name: "opened"
+             PropertyChanges { target: wifiConnect; visible: true }
+             },
+             State {
+                 name: "closed"
+             PropertyChanges { target: wifiConnect; visible: false }
+             }
+         ]
+         transitions: [
+            Transition {
+                 to: "*"
+           // NumberAnimation { target: settingSheet; properties: "y"; duration: 400; easing.type: Easing.InOutQuad; }
+            }
+         ]
+     }
+
+
+
+
+
+
 
     sizeFollowsWindow: true
     window: Window {
@@ -110,10 +181,10 @@ WaylandOutput {
         Rectangle {
             id: view 
             color: "#2E3440"
-            width: (orientation == 0 || orientation == 0) ? 1024 : 600
-            height: (orientation == 0 || orientation == 0) ? 600 : 1024
-            x: (orientation == 0 || orientation == 0) ? 0 : -240
-            y: (orientation == 0|| orientation == 0) ? 0 : 240
+            width:  1024//(orientation == 0 || orientation == 0) ? 1024 : 600
+            height: 600 //(orientation == 0 || orientation == 0) ? 600 : 1024
+            x:  0 //(orientation == 0 || orientation == 0) ? 0 : -240
+            y:  0 //(orientation == 0|| orientation == 0) ? 0 : 240
             rotation: orientation 
 
             Rectangle { anchors.fill: parent; color: '#2E3440' }
@@ -278,22 +349,28 @@ WaylandOutput {
                     }
                 }
 
-                SettingSheet { id: settingSheet } 
-                StatusArea { id: setting }
-                WifiConnect { id: wifiConnect }
-                Repeater {
-                           anchors { top: naviBar.bottom; left: parent.left; bottom: parent.bottom; right: parent.right }
-                           model: shellSurfaces
-                           delegate: Component {
-                               Loader {
-                                   source: ( modelData.toString().match(/XWaylandShellSurface/) ) ?
-                                       "XWaylandChrome.qml" : "WaylandChrome.qml"
-                               }
-                           }
-                       }
-                   }
 
-            LockScreen { id: lockscreen }
+                Repeater {
+                    anchors { top: naviBar.bottom; left: parent.left; bottom: parent.bottom; right: parent.right }
+
+                    model: shellSurfaces
+                    delegate: Component {
+                        Loader {
+
+                            source: "WaylandChrome.qml"
+                        }
+                    }
+                }
+            }
+             HomeLauncher{id: homeLauncher}
+            SettingSheet { id: settingSheet }
+            StatusArea { id: setting }
+           WifiConnect { id: wifiConnect }
+           // LockScreen { id: lockscreen }
+
+
+
+
 
             Loader {
                 anchors.fill: parent

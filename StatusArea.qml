@@ -81,7 +81,7 @@ Rectangle {
         }
 
         Text {
-            font.pointSize: 15
+            font.pointSize: 16
             text: Qt.formatDateTime(new Date(), formatDateTimeString)
             color: "#ECEFF4"
             anchors.leftMargin: 5
@@ -105,10 +105,10 @@ Rectangle {
         //    screenshotTimer.start();
         //}
         onClicked: { 
-            if (settingSheet.y > -535) { root.state = "normal" } else { root.state = "setting" }
+            if (settingSheet.y > -535) { settingSlate.state = "closed" } else {settingSlate.state= "opened" }
         } 
         onReleased: { 
-            if (settingSheet.y > -535) { root.state = "setting" } else { root.state = "normal" }
+            if (settingSheet.y > -535) {settingSlate.state="opened" } else {settingSlate.state = "closed" }
         }
     }
 }

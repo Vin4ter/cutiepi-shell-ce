@@ -5,6 +5,6 @@ LXW.XWaylandShellSurfaceItem {
     anchors { top: parent.top; topMargin: 85; left: parent.left; }
     sizeFollowsSurface: false
     shellSurface: modelData
-    onSurfaceDestroyed: shellSurfaces.remove(index)
-    visible: sidebar.tabListView.currentIndex == index
+	onSurfaceDestroyed: shellSurfaces.remove(index)
+	visible: sidebar.tabListView.currentIndex == index
 }

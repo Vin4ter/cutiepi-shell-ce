@@ -7,6 +7,7 @@
 #include <QQmlContext>
 #include "QNetworkConfigurationManager"
 #include "wifimanager.h"
+#include "applauncher.h"
 #include "soundcontroller.h"
 int main(int argc, char *argv[])
 {
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
      qputenv("QT_IM_MODULE", "qtvirtualkeyboard");
      qputenv("QT_VIRTUALKEYBOARD_LAYOUT_PATH", "qrc:/layouts/");
       qputenv("QT_QAYLAND_CLIENT_BUFFER_INTEGRATION", "wayland-egl");
-       qputenv("XDG_RUNTIME_DIR", "XDG_RUNTIME_DIR=$HOME/.xdg");
+     //  qputenv("XDG_RUNTIME_DIR", "XDG_RUNTIME_DIR=$HOME/.xdg");
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
@@ -26,13 +27,15 @@ int main(int argc, char *argv[])
  AppCore appCore;
  wifiManager wm;
  soundController am;
+ AppLauncher al;
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();
      context->setContextProperty("coreShell", &appCore);
      context->setContextProperty("wifiManager", &wm);
-       context->setContextProperty("audioManager", &am);
+     context->setContextProperty("audioManager", &am);
+     context->setContextProperty("appLauncher", &al);
     const QUrl url(QStringLiteral("qrc:/compositor.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

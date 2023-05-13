@@ -17,6 +17,7 @@ Rectangle {
      text: "Please enter the password"
      horizontalAlignment: Text.AlignHCenter
      verticalAlignment: Text.AlignVCenter
+     anchors.horizontalCenter: parent.horizontalCenter
      minimumPointSize: 14
      minimumPixelSize: 14
      anchors.verticalCenterOffset: -57
@@ -48,8 +49,10 @@ Rectangle {
 
  Button {
      id: button
+     x: 140
      y: 92
      text: qsTr("done")
+     anchors.horizontalCenter: parent.horizontalCenter
 
      background: Rectangle {
                 implicitWidth: 100
@@ -61,7 +64,7 @@ Rectangle {
 
      }
      onClicked: {
-  root.state="normal"
+          wmSlate.state  = "closed"
       wifiManager.connectWifi(select_ssid, passwordt.text)
      }
  }
